@@ -1,32 +1,85 @@
-# React + TypeScript + Vite
+# Inventario Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interfaz web para consultar los productos activos de `inventario-api` y crear
+productos con su precio y stock inicial.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20.19 o superior y npm.
+- Python 3.12 o superior para ejecutar `inventario-api`.
 
-## React Compiler
+Las versiones de dependencias de JavaScript están fijadas en `package.json` y
+`package-lock.json`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Ejecutar inventario-api
 
-## Expanding the Oxlint configuration
+Desde la carpeta del proyecto:
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```powershell
+Set-Location ..\inventario-api
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements-dev.txt
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+La API estará disponible en `http://localhost:8000`. Si no se define
+`CORS_ORIGINS`, la API permite por defecto el origen `http://localhost:5173`,
+que es el que usa Vite en desarrollo. Si necesitas cambiarlo, configura esa
+variable en la terminal antes de iniciar la API, por ejemplo:
+
+```powershell
+$env:CORS_ORIGINS = "http://localhost:5173"
+```
+
+La API usa SQLite por defecto. Consulta el README de `inventario-api` para
+opciones de base de datos y configuración.
+
+## Configuración y ejecución
+
+Desde la carpeta `inventario-web`, instala dependencias y crea el archivo local
+de entorno:
+
+```powershell
+npm install
+Copy-Item .env.example .env.local
+```
+
+`VITE_API_URL` indica la URL base de la API. Su valor predeterminado es
+`http://localhost:8000`; cambia esta variable en `.env.local` si la API se
+ejecuta en otra dirección.
+
+Inicia la aplicación:
+
+```powershell
+npm run dev
+```
+
+Abre `http://localhost:5173` en el navegador. La vista consulta `GET /productos`
+y permite agregar productos con `POST /productos`.
+
+## Scripts disponibles
+
+- `npm run dev`: inicia el servidor local de Vite.
+- `npm run lint`: ejecuta ESLint.
+- `npm run test`: ejecuta las pruebas unitarias y de componentes con Vitest.
+- `npm run test:e2e`: ejecuta las pruebas de navegador con Playwright.
+- `npm run build`: verifica TypeScript estricto y genera la compilación de
+  producción.
+- `npm run preview`: sirve localmente la compilación de producción.
+
+## Pruebas
+
+Ejecuta todas las comprobaciones con:
+
+```powershell
+npm run lint
+npm run test
+npm run build
+npm run test:e2e
+```
+
+Vitest usa jsdom y MSW para simular `GET /productos` y `POST /productos` en las
+pruebas de componentes. La prueba E2E usa `page.route` de Playwright para
+interceptar esas solicitudes en el navegador. Este mock de red mantiene la
+prueba reproducible y no requiere una API o una base de datos en ejecución.
