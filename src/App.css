@@ -93,6 +93,117 @@
   padding: 25px 28px 8px;
 }
 
+.rejilla-inventario {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(290px, 0.9fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.panel-formulario {
+  padding: 25px 26px 26px;
+}
+
+.icono-agregar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--verde-claro);
+  color: var(--verde-oscuro);
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.formulario-producto {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-producto label {
+  margin: 0 0 7px;
+  color: var(--tinta);
+  font-size: 12px;
+  font-weight: 640;
+}
+
+.formulario-producto input {
+  width: 100%;
+  min-height: 43px;
+  padding: 0 12px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--tinta);
+  font-size: 13px;
+  transition: border-color 140ms ease;
+}
+
+.formulario-producto input:focus {
+  border-color: var(--verde);
+}
+
+.formulario-producto input::placeholder {
+  color: #a4afaa;
+}
+
+.formulario-producto .ayuda-campo {
+  margin: 6px 0 16px;
+  color: var(--texto-secundario);
+  font-size: 11px;
+}
+
+.entrada-precio {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.formulario-producto > label:not(:first-child) {
+  margin-top: 0;
+}
+
+.mensaje-formulario {
+  margin-top: 12px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mensaje-confirmacion {
+  margin: 12px 0 0;
+  color: var(--verde-oscuro);
+  font-size: 12px;
+}
+
+.boton-crear {
+  min-height: 44px;
+  margin-top: 19px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--verde);
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+  transition:
+    background 140ms ease,
+    transform 140ms ease;
+}
+
+.boton-crear:hover:not(:disabled) {
+  background: var(--verde-oscuro);
+}
+
+.boton-crear:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.boton-crear:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .encabezado-panel {
   display: flex;
   align-items: center;
@@ -213,6 +324,14 @@
 
   .panel-productos {
     padding: 21px 18px 5px;
+  }
+
+  .rejilla-inventario {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-formulario {
+    padding: 21px 18px;
   }
 
   .fila-producto {

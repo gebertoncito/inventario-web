@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ErrorApi, listarProductos } from './api/cliente';
-import type { Producto } from './api/tipos';
+import { crearProducto, ErrorApi, listarProductos } from './api/cliente';
+import type { Producto, ProductoCrear } from './api/tipos';
+import { FormularioProducto } from './componentes/FormularioProducto';
 import { ListaProductos } from './componentes/ListaProductos';
 import './App.css';
 
@@ -8,6 +9,11 @@ function App() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  async function manejarCreacion(datos: ProductoCrear) {
+    const productoCreado = await crearProducto(datos);
+    setProductos((actuales) => [...actuales, productoCreado]);
+  }
 
   useEffect(() => {
     let componenteActivo = true;
@@ -62,11 +68,14 @@ function App() {
         </p>
       </section>
 
-      <ListaProductos
-        productos={productos}
-        cargando={cargando}
-        error={error}
-      />
+      <div className="rejilla-inventario">
+        <ListaProductos
+          productos={productos}
+          cargando={cargando}
+          error={error}
+        />
+        <FormularioProducto onCrear={manejarCreacion} />
+      </div>
     </main>
   );
 }
