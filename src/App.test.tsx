@@ -10,6 +10,19 @@ const API_URL = 'http://localhost:8000';
 
 describe('inventario de productos', () => {
   it('muestra los productos activos que devuelve la API', async () => {
+    servidor.use(
+      http.get(`${API_URL}/productos`, () =>
+        HttpResponse.json([
+          {
+            id: 1,
+            nombre: 'Arroz',
+            precio: '1250.00',
+            stock: 8,
+            activo: true,
+          },
+        ]),
+      ),
+    );
     render(<App />);
 
     const producto = await screen.findByText('Arroz');
@@ -17,9 +30,7 @@ describe('inventario de productos', () => {
 
     expect(fila).not.toBeNull();
     expect(within(fila as HTMLElement).getByText('Stock: 8 unidades')).toBeInTheDocument();
-    expect(
-      within(fila as HTMLElement).getByText(/1\s?250,00/),
-    ).toBeInTheDocument();
+    expect(within(fila as HTMLElement).getByText(/1\s?250,00/)).toBeInTheDocument();
   });
 
   it('valida campos vacíos y precio no positivo antes de llamar a la API', async () => {
@@ -65,6 +76,7 @@ describe('inventario de productos', () => {
     const fila = productoCreado.closest('li');
     expect(fila).not.toBeNull();
     expect(within(fila as HTMLElement).getByText('Stock: 12 unidades')).toBeInTheDocument();
+    expect(within(fila as HTMLElement).getByText(/850,50/)).toBeInTheDocument();
     expect(await screen.findByRole('status')).toHaveTextContent(
       'Producto agregado al inventario.',
     );

@@ -57,7 +57,7 @@ export function ListaProductos({
                 <p>Stock: {producto.stock} unidades</p>
               </div>
               <span className="precio-producto">
-                {formatoPrecio.format(producto.precio)}
+                {formatoPrecio.format(Number(producto.precio))}
               </span>
             </li>
           ))}

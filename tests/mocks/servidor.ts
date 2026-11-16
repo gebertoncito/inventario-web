@@ -8,7 +8,7 @@ const productosIniciales: Producto[] = [
   {
     id: 1,
     nombre: 'Arroz',
-    precio: 1250,
+    precio: '1250.00',
     stock: 8,
     activo: true,
   },
@@ -19,7 +19,7 @@ export const servidor = setupServer(
   http.post(`${API_URL}/productos`, async ({ request }) => {
     const producto = (await request.json()) as ProductoCrear;
     return HttpResponse.json(
-      { ...producto, id: 2, activo: true },
+      { ...producto, precio: String(producto.precio), id: 2, activo: true },
       { status: 201 },
     );
   }),

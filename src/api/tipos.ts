@@ -1,7 +1,7 @@
 export interface Producto {
   id: number;
   nombre: string;
-  precio: number;
+  precio: string;
   stock: number;
   activo: boolean;
 }

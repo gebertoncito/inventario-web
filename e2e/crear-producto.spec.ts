@@ -12,7 +12,7 @@ test('crea un producto y lo muestra en el inventario', async ({ page }) => {
           {
             id: 1,
             nombre: 'Arroz',
-            precio: 1250,
+            precio: '1250.00',
             stock: 8,
             activo: true,
           } satisfies Producto,
@@ -21,10 +21,16 @@ test('crea un producto y lo muestra en el inventario', async ({ page }) => {
       return;
     }
 
-    productoEnviado = route.request().postDataJSON() as ProductoCrear;
+    const datosProducto = route.request().postDataJSON() as ProductoCrear;
+    productoEnviado = datosProducto;
     await route.fulfill({
       status: 201,
-      json: { ...productoEnviado, id: 2, activo: true } satisfies Producto,
+      json: {
+        ...datosProducto,
+        precio: String(datosProducto.precio),
+        id: 2,
+        activo: true,
+      } satisfies Producto,
     });
   });
 
